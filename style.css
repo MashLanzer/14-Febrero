@@ -1,0 +1,507 @@
+:root {
+    --primary: #ff4d6d;
+    --secondary: #ff758f;
+    --accent: #fff0f3;
+    --text: #590d22;
+    --white: #ffffff;
+    --gold: #d4af37;
+    --font-main: 'Outfit', sans-serif;
+    --font-script: 'Pinyon Script', cursive;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #0a0104;
+    color: var(--white);
+    font-family: var(--font-main);
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0104;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+}
+
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    z-index: 100;
+    background: linear-gradient(to bottom, rgba(10, 1, 4, 0.8), transparent);
+}
+
+.nav-links {
+    display: flex;
+    gap: 3rem;
+}
+
+.nav-links a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: 0.3s;
+    opacity: 0.7;
+}
+
+.nav-links a:hover {
+    opacity: 1;
+    color: var(--primary);
+}
+
+section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 6rem 2rem;
+    z-index: 2;
+}
+
+/* --- HERO --- */
+.hero h1 {
+    font-family: var(--font-script);
+    font-size: clamp(5rem, 18vw, 12rem);
+    color: var(--white);
+    margin-bottom: 2rem;
+    text-shadow:
+        0 0 10px var(--primary),
+        0 0 20px var(--primary),
+        0 0 40px var(--primary),
+        0 0 80px var(--primary);
+    animation: fadeInDown 2.5s ease;
+}
+
+.hero p {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+/* --- TIMELINE DESIGN --- */
+.timeline-container {
+    position: relative;
+    max-width: 900px;
+    width: 100%;
+    padding: 4rem 0;
+}
+
+.timeline-line {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, var(--primary), transparent);
+    z-index: 1;
+}
+
+.milestone-item {
+    position: relative;
+    width: 100%;
+    margin-bottom: 6rem;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 50%;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 1s ease;
+}
+
+.milestone-item:nth-child(even) {
+    justify-content: flex-start;
+    padding-right: 0;
+    padding-left: 50%;
+}
+
+.milestone-item:nth-child(odd) .milestone-card {
+    margin-right: 40px;
+    /* Espacio desde el punto central */
+}
+
+.milestone-item:nth-child(even) .milestone-card {
+    margin-left: 40px;
+    /* Espacio desde el punto central */
+}
+
+.milestone-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Centrado exacto de los puntos */
+.milestone-item::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 24px;
+    height: 24px;
+    background: var(--primary);
+    border: 4px solid var(--white);
+    border-radius: 50%;
+    z-index: 10;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 20px var(--primary);
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.milestone-item:hover::before {
+    transform: translate(-50%, -50%) scale(1.4);
+    box-shadow: 0 0 40px var(--primary);
+    background: var(--white);
+    border-color: var(--primary);
+}
+
+.milestone-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 204, 213, 0.2);
+    padding: 2.5rem;
+    border-radius: 30px;
+    width: 90%;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    transition: 0.4s;
+}
+
+.milestone-card:hover {
+    border-color: var(--primary);
+    transform: scale(1.05);
+    background: rgba(255, 77, 109, 0.1);
+}
+
+.milestone-date {
+    display: inline-block;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 2px;
+}
+
+.milestone-card h3 {
+    font-family: var(--font-script);
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--white);
+}
+
+.milestone-card p {
+    opacity: 0.8;
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+/* --- ENVELOPE & LETTER (ULTRALIVE REWRITE) --- */
+.envelope-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.envelope {
+    position: relative;
+    width: 450px;
+    height: 300px;
+    background: #ffccd5;
+    cursor: pointer;
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    z-index: 5;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.envelope:hover {
+    transform: translateY(-15px) rotate(1deg);
+    box-shadow: 0 40px 80px rgba(255, 77, 109, 0.3);
+}
+
+.envelope:hover::before {
+    transform: rotateX(20deg);
+    /* La solapa se levanta un poquito al pasar el mouse */
+}
+
+/* La solapa superior (Flap) */
+.envelope::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    z-index: 20;
+    border-top: 150px solid #ffb6c1;
+    border-left: 225px solid transparent;
+    border-right: 225px solid transparent;
+    transform-origin: top;
+    /* Al cerrarse, esperamos a que la carta baje (delay de 0.6s) */
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.6s, z-index 0.3s 0.6s;
+}
+
+.envelope::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #ffccd5 0%, #ffb6c1 100%);
+    clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+    z-index: 8;
+}
+
+.envelope.open::before {
+    transform: rotateX(180deg);
+    z-index: 4;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0s, z-index 0.3s 0s;
+    /* Pasa atrás al abrirse sin delay */
+}
+
+.letter-mini {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 250px;
+    background: #fff;
+    z-index: 7;
+    /* Detrás del z-index 8 del clip-path ::after */
+    transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.envelope.open .letter-mini {
+    transform: translate(-50%, -180px);
+    /* Sale del sobre */
+}
+
+.letter-pop {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -40%) scale(0.8) rotateX(-10deg);
+    width: 95%;
+    max-width: 700px;
+    height: 85vh;
+    background: #fff;
+    padding: clamp(2rem, 5vw, 4rem);
+    color: var(--text);
+    z-index: 2500;
+    opacity: 0;
+    border-radius: 20px;
+    box-shadow: 0 100px 150px rgba(0, 0, 0, 0.9);
+    transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+    overflow-y: auto;
+    pointer-events: none;
+    background-image: radial-gradient(circle at 2px 2px, rgba(0, 0, 0, 0.05) 1px, transparent 0);
+    background-size: 30px 30px;
+}
+
+.letter-pop.active {
+    transform: translate(-50%, -50%) scale(1) rotateX(0);
+    opacity: 1;
+    pointer-events: all;
+}
+
+.letter-pop::-webkit-scrollbar {
+    width: 4px;
+}
+
+.letter-pop::-webkit-scrollbar-thumb {
+    background: #ffccd5;
+    border-radius: 10px;
+}
+
+.letter-pop h2 {
+    font-family: var(--font-script);
+    font-size: 4rem;
+    color: var(--primary);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.letter-pop p {
+    font-size: 1.3rem;
+    line-height: 2;
+    margin-bottom: 1.5rem;
+    text-align: justify;
+}
+
+.letter-pop .close-letter {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: var(--primary);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    z-index: 3000;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    z-index: 2400;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+.overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* --- MOMENTS --- */
+.moments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3rem;
+    width: 100%;
+    max-width: 1100px;
+}
+
+.moment-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 3rem;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: 0.5s;
+}
+
+.moment-card:hover {
+    transform: scale(1.05);
+    background: rgba(255, 77, 109, 0.15);
+}
+
+.moment-icon {
+    font-size: 3.5rem;
+    margin-bottom: 2rem;
+    display: block;
+}
+
+.moment-card h3 {
+    color: var(--primary);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.moment-card p {
+    opacity: 0.9;
+    line-height: 2;
+    font-size: 1.1rem;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px var(--primary));
+    }
+
+    50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 30px var(--primary));
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .timeline-line {
+        left: 20px;
+        transform: none;
+    }
+
+    .milestone-item {
+        padding-left: 50px;
+        padding-right: 0;
+        justify-content: flex-start;
+    }
+
+    .milestone-item::before {
+        left: 20px;
+    }
+
+    .hero h1 {
+        font-size: 5rem;
+    }
+
+    .envelope {
+        width: 320px;
+        height: 220px;
+    }
+
+    .envelope::before {
+        border-top-width: 110px;
+        border-left-width: 160px;
+        border-right-width: 160px;
+    }
+
+    .letter-pop {
+        height: 90vh;
+        width: 98%;
+        padding: 2rem 1.5rem;
+    }
+}
