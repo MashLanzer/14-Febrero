@@ -257,6 +257,50 @@ section {
     /* La solapa se levanta un poquito al pasar el mouse */
 }
 
+/* --- DECORACIONES DETRÁS DEL SOBRE --- */
+.env-decor {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    z-index: 2;
+    /* Por detrás del sobre que tiene z-index 5 */
+    font-size: 2.5rem;
+    opacity: 0;
+    transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+    filter: drop-shadow(0 0 10px rgba(255, 77, 109, 0.3));
+}
+
+.envelope-wrapper:hover .env-decor {
+    opacity: 1;
+}
+
+/* Posiciones individuales al hacer hover */
+.envelope-wrapper:hover .d1 {
+    transform: translate(-260px, -180px) scale(1) rotate(-15deg);
+}
+
+.envelope-wrapper:hover .d2 {
+    transform: translate(220px, -160px) scale(1) rotate(15deg);
+}
+
+.envelope-wrapper:hover .d3 {
+    transform: translate(-200px, 60px) scale(1) rotate(10deg);
+}
+
+.envelope-wrapper:hover .d4 {
+    transform: translate(240px, 40px) scale(1) rotate(-10deg);
+}
+
+.envelope-wrapper:hover .d5 {
+    transform: translate(0px, -220px) scale(1.3);
+}
+
+.envelope-wrapper:hover .d6 {
+    transform: translate(-120px, -200px) scale(0.9) rotate(-20deg);
+}
+
 /* La solapa superior (Flap) */
 .envelope::before {
     content: '';
