@@ -110,7 +110,42 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Firebase Compat
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-    const storage = firebase.storage();
+
+    // --- IMGBB CONFIGURATION ---
+    // El sistema de Proxy de tu otro proyecto está bloqueado por CORS para este nuevo dominio.
+    // Para que funcione, necesitamos usar una API KEY directa de ImgBB.
+    // Puedes obtener una gratis aquí: https://api.imgbb.com/ (solo toma 1 minuto)
+    const IMGBB_API_KEY = "9d07de7fb3ed26a78e7ccb169c2ecbb7";
+
+    async function subirImagenImgBB(file) {
+        if (!IMGBB_API_KEY || IMGBB_API_KEY === "TU_API_KEY_AQUI") {
+            throw new Error('Por favor, configura tu IMGBB_API_KEY en script.js');
+        }
+
+        const formData = new FormData();
+        formData.append('image', file);
+
+        try {
+            const resp = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                method: 'POST',
+                body: formData
+            });
+            const data = await resp.json();
+
+            if (!data || !data.data || !data.data.url) {
+                throw new Error('Error en la respuesta de ImgBB');
+            }
+
+            return {
+                url: data.data.url,
+                deleteUrl: data.data.delete_url || null,
+                thumbUrl: data.data.thumb ? data.data.thumb.url : data.data.url
+            };
+        } catch (e) {
+            console.error('Error al subir a ImgBB:', e);
+            throw e;
+        }
+    }
 
     // 6. Scattered Memories (Recuerdos)
     const localMemoryImages = [
@@ -269,15 +304,15 @@ document.addEventListener('DOMContentLoaded', () => {
             uploadStatus.innerText = '✨ Subiendo tu recuerdo...';
 
             try {
-                const fileName = `${Date.now()}_${file.name}`;
-                const storageRef = storage.ref(`memories/${fileName}`);
-                const snapshot = await storageRef.put(file);
-                const downloadURL = await snapshot.ref.getDownloadURL();
+                // Usamos el sistema de ImgBB igual que en tu otro proyecto
+                const imgData = await subirImagenImgBB(file);
 
                 await db.collection("memories").add({
-                    imageUrl: downloadURL,
+                    imageUrl: imgData.url,
+                    thumbUrl: imgData.thumbUrl,
+                    deleteUrl: imgData.deleteUrl,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    fileName: fileName
+                    fileName: file.name
                 });
 
                 uploadStatus.innerText = '✅ Recuerdo guardado eternamente';
