@@ -12,37 +12,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 2. Timer
-    const anniversaryDate = new Date(2025, 8, 28);
+    const startDate = new Date(2025, 8, 28); // Septiembre es mes 8
     const countUpElement = document.getElementById('countUp');
 
     function updateCounter() {
         const now = new Date();
-        const diff = now - anniversaryDate;
+        const diff = now - startDate;
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-        countUpElement.innerHTML = `Llevamos construyendo magia <br> <b style="color: #ff4d6d; font-size: 3rem;">${days}d ${hours}h ${minutes}m ${seconds}s</b>`;
+        if (countUpElement) {
+            countUpElement.innerHTML = `Llevamos construyendo magia <br> <b style="color: #ff4d6d; font-size: 3rem;">${days}d ${hours}h ${minutes}m ${seconds}s</b>`;
+        }
     }
     setInterval(updateCounter, 1000);
 
-    // 3. Envelope Interaction (Sequential Animation)
+    // 3. Envelope Interaction
     const envelope = document.getElementById('loveEnvelope');
     const letterPop = document.getElementById('letterPop');
     const overlay = document.getElementById('overlay');
     const closeLetter = document.getElementById('closeLetter');
 
-    envelope.addEventListener('click', () => {
-        // Fase 1: Abrir el sobre y que salga la mini-carta
-        envelope.classList.add('open');
-
-        // Fase 2: Mostrar el modal con enfoque (después de que la carta salga)
-        setTimeout(() => {
-            letterPop.classList.add('active');
-            overlay.classList.add('active');
-        }, 1200); // Dar tiempo a que la mini-carta suba
-    });
+    if (envelope) {
+        envelope.addEventListener('click', () => {
+            envelope.classList.add('open');
+            setTimeout(() => {
+                letterPop.classList.add('active');
+                overlay.classList.add('active');
+            }, 1200);
+        });
+    }
 
     const hideLetter = () => {
         letterPop.classList.remove('active');
@@ -50,28 +51,29 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => envelope.classList.remove('open'), 400);
     };
 
-    closeLetter.addEventListener('click', hideLetter);
-    overlay.addEventListener('click', hideLetter);
+    if (closeLetter) closeLetter.addEventListener('click', hideLetter);
+    if (overlay) overlay.addEventListener('click', hideLetter);
 
     // 4. Scroll Reveal
-    const observer = new IntersectionObserver((entries) => {
+    const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) entry.target.classList.add('visible');
         });
     }, { threshold: 0.1 });
 
-    document.querySelectorAll('.scroll-reveal, .milestone-item').forEach(el => observer.observe(el));
+    document.querySelectorAll('.scroll-reveal, .milestone-item').forEach(el => revealObserver.observe(el));
 
     // 5. Heart Blast
     const mainHeart = document.getElementById('mainHeart');
-    mainHeart.addEventListener('click', () => {
-        for (let i = 0; i < 30; i++) createExplosionHeart();
-    });
+    if (mainHeart) {
+        mainHeart.addEventListener('click', () => {
+            for (let i = 0; i < 30; i++) createExplosionHeart();
+        });
+    }
 
     function createExplosionHeart() {
         const h = document.createElement('div');
         const heartEmojis = ['❤️', '💖', '💕', '✨', '🌸'];
-        h.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.heartEmojis)]; // Fixed typo here logically in next thought
         h.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
         h.style.position = 'fixed';
         h.style.left = '50%';
@@ -92,5 +94,215 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.body.appendChild(h);
         anim.onfinish = () => h.remove();
+    }
+
+    // 6. Scattered Memories (Recuerdos)
+    const memoryImages = [
+        'images/20260111_115144.heic',
+        'images/IMG-20260104-WA005011.jpg',
+        'images/IMG_20251103_181417.jpg',
+        'images/20250529_193719.heic',
+        'images/20250902_175326.heic',
+        'images/20250902_175402.heic.heif',
+        'images/20250902_175524.heic',
+        'images/20250902_180817.heic',
+        'images/20250905_151404.heic',
+        'images/20250917_171832.heic',
+        'images/20251127_140737.heic',
+        'images/20260111_115021.heic',
+        'images/20260111_115154.heic',
+        'images/20250529_164559.heic',
+        'images/IMG-20251030-WA0010_1.jpg',
+        'images/20251017_155641_1.heic.heif'
+    ];
+
+    const memoriesContainer = document.getElementById('memoriesContainer');
+    let topZ = 120;
+
+    if (memoriesContainer) {
+        memoryImages.forEach((src, index) => {
+            const polaroid = document.createElement('div');
+            polaroid.className = `polaroid scroll-reveal`;
+
+            const savedPos = JSON.parse(localStorage.getItem(`pos-${src}`));
+
+            if (savedPos) {
+                polaroid.style.left = savedPos.left;
+                polaroid.style.top = savedPos.top;
+                polaroid.style.zIndex = savedPos.zIndex;
+                polaroid.style.transform = savedPos.transform;
+                if (savedPos.zIndex > topZ) topZ = savedPos.zIndex;
+            } else {
+                const itemsPerRow = 8;
+                const col = index % itemsPerRow;
+                const row = Math.floor(index / itemsPerRow);
+                const posX = 1 + (col * 12.3);
+                const posY = 30 + (row * 340);
+                const randomRot = (Math.random() - 0.5) * 10;
+
+                polaroid.style.left = `${posX}%`;
+                polaroid.style.top = `${posY}px`;
+                polaroid.style.transform = `rotate(${randomRot}deg)`;
+                polaroid.style.zIndex = index + 10;
+            }
+
+            polaroid.style.cursor = 'grab';
+            polaroid.innerHTML = `
+                <div class="photo-loader" style="width:100%; height:190px; display:flex; align-items:center; justify-content:center; background:#f5f5f5; color:#ff4d6d; font-size:0.7rem; border-radius:3px; pointer-events:none;">❤️</div>
+                <div style="font-family: var(--font-script); color: #555; margin-top: 8px; font-size: 1rem; pointer-events:none; user-select:none; text-align:center;">Historia...</div>
+            `;
+
+            memoriesContainer.appendChild(polaroid);
+
+            // Drag
+            let isDragging = false;
+            let startX, startY, initialLeft, initialTop;
+
+            polaroid.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                topZ++;
+                polaroid.style.zIndex = topZ;
+                polaroid.style.cursor = 'grabbing';
+                startX = e.clientX;
+                startY = e.clientY;
+                initialLeft = polaroid.offsetLeft;
+                initialTop = polaroid.offsetTop;
+                polaroid.style.transition = 'none';
+                e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+                polaroid.style.left = `${initialLeft + dx}px`;
+                polaroid.style.top = `${initialTop + dy}px`;
+            });
+
+            document.addEventListener('mouseup', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    polaroid.style.cursor = 'grab';
+                    polaroid.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1), z-index 0s';
+                    localStorage.setItem(`pos-${src}`, JSON.stringify({
+                        left: polaroid.style.left,
+                        top: polaroid.style.top,
+                        zIndex: parseInt(polaroid.style.zIndex),
+                        transform: polaroid.style.transform
+                    }));
+                }
+            });
+
+            // Loading
+            const isHeic = src.toLowerCase().endsWith('.heic') || src.toLowerCase().endsWith('.heif');
+            if (isHeic) {
+                fetch(src)
+                    .then(res => res.blob())
+                    .then(blob => heic2any({ blob, toType: "image/jpeg", quality: 0.7 }))
+                    .then(converted => {
+                        const url = URL.createObjectURL(Array.isArray(converted) ? converted[0] : converted);
+                        displayImage(polaroid, url);
+                    })
+                    .catch(() => displayImage(polaroid, 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=300&auto=format&fit=crop'));
+            } else {
+                displayImage(polaroid, src);
+            }
+
+            const pFactor = 0.02 + (Math.random() * 0.05);
+            polaroid.dataset.parallax = pFactor;
+        });
+    }
+
+    function displayImage(parent, url) {
+        const loader = parent.querySelector('.photo-loader');
+        const img = document.createElement('img');
+        img.src = url;
+        img.style.width = "100%";
+        img.style.height = "190px";
+        img.style.objectFit = "cover";
+        img.onload = () => {
+            if (loader) loader.remove();
+            const old = parent.querySelector('img');
+            if (old) old.remove();
+            parent.insertBefore(img, parent.firstChild);
+        };
+        img.onerror = () => {
+            if (loader) loader.innerHTML = '⚠️<br><span style="font-size:0.6rem;">Error</span>';
+        };
+    }
+
+    // Parallax
+    window.addEventListener('scroll', () => {
+        const scrolled = window.scrollY;
+        const cTop = memoriesContainer?.offsetTop || 0;
+        const vHeight = window.innerHeight;
+
+        if (memoriesContainer && scrolled > cTop - vHeight && scrolled < cTop + memoriesContainer.offsetHeight) {
+            document.querySelectorAll('.polaroid').forEach(p => {
+                if (p.style.cursor === 'grabbing') return;
+                const f = parseFloat(p.dataset.parallax);
+                const y = (scrolled - cTop) * f;
+                const rot = p.style.transform.match(/rotate\((.*?)\)/)?.[0] || 'rotate(0deg)';
+                p.style.transform = `${rot} translateY(${-y}px)`;
+            });
+        }
+    });
+
+    // 7. Music Player
+    const musicPlayer = document.getElementById('musicPlayer');
+    const vinylPlay = document.getElementById('vinylPlay');
+    const mainSong = document.getElementById('mainSong');
+    const beatOverlay = document.getElementById('beatOverlay');
+    let isPlaying = false;
+    let pulseInterval;
+
+    if (vinylPlay && mainSong) {
+        vinylPlay.addEventListener('click', () => {
+            if (isPlaying) {
+                mainSong.pause();
+                musicPlayer.classList.remove('playing');
+                clearInterval(pulseInterval);
+                beatOverlay.classList.remove('pulse-active');
+            } else {
+                mainSong.play().catch(() => console.log("Interaction needed"));
+                musicPlayer.classList.add('playing');
+                pulseInterval = setInterval(() => {
+                    beatOverlay.classList.add('pulse-active');
+                    setTimeout(() => beatOverlay.classList.remove('pulse-active'), 200);
+                }, 850);
+            }
+            isPlaying = !isPlaying;
+        });
+    }
+
+    // 8. Secret Section
+    const pinInput = document.getElementById('pinInput');
+    const unlockBtn = document.getElementById('unlockBtn');
+    const lockScreen = document.getElementById('lockScreen');
+    const secretContent = document.getElementById('secretContent');
+    const lockError = document.getElementById('lockError');
+    const code = "09282025";
+
+    if (unlockBtn) {
+        unlockBtn.addEventListener('click', () => {
+            if (pinInput.value === code) {
+                lockScreen.style.opacity = '0';
+                lockScreen.style.transform = 'scale(0.8)';
+                setTimeout(() => {
+                    lockScreen.style.display = 'none';
+                    secretContent.style.display = 'block';
+                    secretContent.scrollIntoView({ behavior: 'smooth' });
+                }, 800);
+            } else {
+                lockError.style.opacity = '1';
+                pinInput.style.animation = 'shake 0.5s ease';
+                setTimeout(() => {
+                    pinInput.style.animation = '';
+                    lockError.style.opacity = '0';
+                }, 2000);
+                pinInput.value = '';
+            }
+        });
+        pinInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') unlockBtn.click(); });
     }
 });
