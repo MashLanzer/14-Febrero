@@ -699,32 +699,74 @@ section {
 .custom-upload-btn {
     display: inline-flex;
     align-items: center;
-    gap: 1rem;
-    padding: 1.2rem 2.5rem;
-    background: rgba(255, 77, 109, 0.1);
-    backdrop-filter: blur(10px);
-    border: 2px solid var(--primary);
-    border-radius: 50px;
-    color: white;
+    gap: 1.2rem;
+    padding: 1.4rem 3.5rem;
+    background: linear-gradient(135deg, rgba(255, 77, 109, 0.1), rgba(255, 77, 109, 0.05));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 77, 109, 0.4);
+    border-radius: 100px;
+    color: #fff;
     cursor: pointer;
-    font-size: 1.1rem;
-    letter-spacing: 1px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 10px 30px rgba(255, 77, 109, 0.2);
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.2),
+        inset 0 0 20px rgba(255, 77, 109, 0.1);
+}
+
+.custom-upload-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent);
+    transition: 0.5s;
+}
+
+.custom-upload-btn:hover::before {
+    left: 100%;
 }
 
 .custom-upload-btn:hover {
-    background: var(--primary);
-    transform: translateY(-5px) scale(1.05);
-    box-shadow: 0 15px 40px rgba(255, 77, 109, 0.4);
+    background: linear-gradient(135deg, rgba(255, 77, 109, 0.2), rgba(255, 77, 109, 0.1));
+    border-color: var(--primary);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow:
+        0 20px 40px rgba(255, 77, 109, 0.3),
+        0 0 20px rgba(255, 77, 109, 0.2);
+    letter-spacing: 3px;
 }
 
 .custom-upload-btn:active {
-    transform: translateY(0) scale(0.98);
+    transform: translateY(2px) scale(0.98);
 }
 
 .btn-icon {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    filter: drop-shadow(0 0 10px rgba(255, 77, 109, 0.5));
+    transition: transform 0.3s ease;
+}
+
+.custom-upload-btn:hover .btn-icon {
+    transform: rotate(15deg) scale(1.2);
+}
+
+.btn-text {
+    background: linear-gradient(to right, #fff, #ffeef1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
 .memories-scatter-container {
