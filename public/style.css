@@ -696,6 +696,37 @@ section {
     background: radial-gradient(circle at center, rgba(255, 77, 109, 0.03) 0%, transparent 80%);
 }
 
+.custom-upload-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 2.5rem;
+    background: rgba(255, 77, 109, 0.1);
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--primary);
+    border-radius: 50px;
+    color: white;
+    cursor: pointer;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 30px rgba(255, 77, 109, 0.2);
+}
+
+.custom-upload-btn:hover {
+    background: var(--primary);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(255, 77, 109, 0.4);
+}
+
+.custom-upload-btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.btn-icon {
+    font-size: 1.5rem;
+}
+
 .memories-scatter-container {
     position: relative;
     width: 100%;

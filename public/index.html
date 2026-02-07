@@ -144,8 +144,19 @@
         <h2
             style="font-family: var(--font-script); font-size: 5.5rem; color: #fff; text-align: center; margin-bottom: 2rem; text-shadow: 0 0 30px var(--primary);">
             Nuestras Huellas</h2>
-        <p style="text-align: center; opacity: 0.7; letter-spacing: 2px; margin-bottom: 5rem;">Momentos capturados
+        <p style="text-align: center; opacity: 0.7; letter-spacing: 2px; margin-bottom: 2rem;">Momentos capturados
             que flotan en mi mente</p>
+
+        <div class="upload-area" style="text-align: center; margin-bottom: 5rem;">
+            <label for="imageUpload" class="custom-upload-btn">
+                <span class="btn-icon">📸</span>
+                <span class="btn-text">Subir Nuevo Recuerdo</span>
+                <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+            </label>
+            <div id="uploadStatus"
+                style="margin-top: 1rem; font-size: 0.9rem; color: var(--primary); opacity: 0; transition: 0.3s;">
+                Subiendo tu momento...</div>
+        </div>
 
         <div class="memories-scatter-container" id="memoriesContainer">
             <!-- Las fotos se inyectarán dinámicamente con JS -->
@@ -180,7 +191,12 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
-    <script src="script.js?v=20260206_2247"></script>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+    <script src="script.js?v=20260206_2318"></script>
 </body>
 
 </html>

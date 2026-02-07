@@ -96,8 +96,24 @@ document.addEventListener('DOMContentLoaded', () => {
         anim.onfinish = () => h.remove();
     }
 
+    // --- FIREBASE CONFIGURATION ---
+    const firebaseConfig = {
+        apiKey: "AIzaSyColHyjTP6-6Try8RaIvtZ8bTGKN9Pl83U",
+        authDomain: "febrero-d6968.firebaseapp.com",
+        projectId: "febrero-d6968",
+        storageBucket: "febrero-d6968.firebasestorage.app",
+        messagingSenderId: "669776815993",
+        appId: "1:669776815993:web:4dd17e5921d6214b3871a8",
+        measurementId: "G-5W4YYXB8Y4"
+    };
+
+    // Initialize Firebase Compat
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const storage = firebase.storage();
+
     // 6. Scattered Memories (Recuerdos)
-    const memoryImages = [
+    const localMemoryImages = [
         'images/20260111_115144.heic',
         'images/IMG-20260104-WA005011.jpg',
         'images/IMG_20251103_181417.jpg',
@@ -119,97 +135,158 @@ document.addEventListener('DOMContentLoaded', () => {
     const memoriesContainer = document.getElementById('memoriesContainer');
     let topZ = 120;
 
-    if (memoriesContainer) {
-        memoryImages.forEach((src, index) => {
-            const polaroid = document.createElement('div');
-            polaroid.className = `polaroid scroll-reveal`;
+    function createPolaroid(src, id, isNew = false) {
+        if (!memoriesContainer) return;
 
-            const savedPos = JSON.parse(localStorage.getItem(`pos-${src}`));
+        const polaroid = document.createElement('div');
+        polaroid.className = `polaroid scroll-reveal`;
+        polaroid.dataset.id = id;
 
-            if (savedPos) {
-                polaroid.style.left = savedPos.left;
-                polaroid.style.top = savedPos.top;
-                polaroid.style.zIndex = savedPos.zIndex;
-                polaroid.style.transform = savedPos.transform;
-                if (savedPos.zIndex > topZ) topZ = savedPos.zIndex;
-            } else {
-                const itemsPerRow = 8;
-                const col = index % itemsPerRow;
-                const row = Math.floor(index / itemsPerRow);
-                const posX = 1 + (col * 12.3);
-                const posY = 30 + (row * 340);
-                const randomRot = (Math.random() - 0.5) * 10;
+        const savedPos = JSON.parse(localStorage.getItem(`pos-${id || src}`));
 
-                polaroid.style.left = `${posX}%`;
-                polaroid.style.top = `${posY}px`;
-                polaroid.style.transform = `rotate(${randomRot}deg)`;
-                polaroid.style.zIndex = index + 10;
+        if (savedPos) {
+            polaroid.style.left = savedPos.left;
+            polaroid.style.top = savedPos.top;
+            polaroid.style.zIndex = savedPos.zIndex;
+            polaroid.style.transform = savedPos.transform;
+            if (savedPos.zIndex > topZ) topZ = savedPos.zIndex;
+        } else {
+            const itemsPerRow = 8;
+            const childCount = memoriesContainer.children.length;
+            const col = childCount % itemsPerRow;
+            const row = Math.floor(childCount / itemsPerRow);
+            const posX = 1 + (col * 12.3);
+            const posY = 30 + (row * 340);
+            const randomRot = (Math.random() - 0.5) * 10;
+
+            polaroid.style.left = `${posX}%`;
+            polaroid.style.top = `${posY}px`;
+            polaroid.style.transform = `rotate(${randomRot}deg)`;
+            polaroid.style.zIndex = childCount + 10;
+        }
+
+        polaroid.style.cursor = 'grab';
+        polaroid.innerHTML = `
+            <div class="photo-loader" style="width:100%; height:190px; display:flex; align-items:center; justify-content:center; background:#f5f5f5; color:#ff4d6d; font-size:0.7rem; border-radius:3px; pointer-events:none;">❤️</div>
+            <div style="font-family: var(--font-script); color: #555; margin-top: 8px; font-size: 1rem; pointer-events:none; user-select:none; text-align:center;">Recuerdo...</div>
+        `;
+
+        memoriesContainer.appendChild(polaroid);
+
+        // Drag logic
+        setupDrag(polaroid, id || src);
+
+        // Load image
+        const isHeic = src.toLowerCase().endsWith('.heic') || src.toLowerCase().endsWith('.heif');
+        if (isHeic) {
+            fetch(src)
+                .then(res => res.blob())
+                .then(blob => heic2any({ blob, toType: "image/jpeg", quality: 0.7 }))
+                .then(converted => {
+                    const url = URL.createObjectURL(Array.isArray(converted) ? converted[0] : converted);
+                    displayImage(polaroid, url);
+                })
+                .catch(() => displayImage(polaroid, 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=300&auto=format&fit=crop'));
+        } else {
+            displayImage(polaroid, src);
+        }
+
+        const pFactor = 0.02 + (Math.random() * 0.05);
+        polaroid.dataset.parallax = pFactor;
+
+        if (isNew) {
+            polaroid.classList.add('visible'); // Show immediately if just uploaded
+            polaroid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+
+    function setupDrag(polaroid, storageKey) {
+        let isDragging = false;
+        let startX, startY, initialLeft, initialTop;
+
+        polaroid.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            topZ++;
+            polaroid.style.zIndex = topZ;
+            polaroid.style.cursor = 'grabbing';
+            startX = e.clientX;
+            startY = e.clientY;
+            initialLeft = polaroid.offsetLeft;
+            initialTop = initialTop = polaroid.offsetTop;
+            polaroid.style.transition = 'none';
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            polaroid.style.left = `${initialLeft + dx}px`;
+            polaroid.style.top = `${initialTop + dy}px`;
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                polaroid.style.cursor = 'grab';
+                polaroid.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1), z-index 0s';
+                localStorage.setItem(`pos-${storageKey}`, JSON.stringify({
+                    left: polaroid.style.left,
+                    top: polaroid.style.top,
+                    zIndex: parseInt(polaroid.style.zIndex),
+                    transform: polaroid.style.transform
+                }));
             }
+        });
+    }
 
-            polaroid.style.cursor = 'grab';
-            polaroid.innerHTML = `
-                <div class="photo-loader" style="width:100%; height:190px; display:flex; align-items:center; justify-content:center; background:#f5f5f5; color:#ff4d6d; font-size:0.7rem; border-radius:3px; pointer-events:none;">❤️</div>
-                <div style="font-family: var(--font-script); color: #555; margin-top: 8px; font-size: 1rem; pointer-events:none; user-select:none; text-align:center;">Historia...</div>
-            `;
+    // Load Initial Local Images
+    localMemoryImages.forEach((src, idx) => createPolaroid(src, `local-${idx}`));
 
-            memoriesContainer.appendChild(polaroid);
-
-            // Drag
-            let isDragging = false;
-            let startX, startY, initialLeft, initialTop;
-
-            polaroid.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                topZ++;
-                polaroid.style.zIndex = topZ;
-                polaroid.style.cursor = 'grabbing';
-                startX = e.clientX;
-                startY = e.clientY;
-                initialLeft = polaroid.offsetLeft;
-                initialTop = polaroid.offsetTop;
-                polaroid.style.transition = 'none';
-                e.preventDefault();
-            });
-
-            document.addEventListener('mousemove', (e) => {
-                if (!isDragging) return;
-                const dx = e.clientX - startX;
-                const dy = e.clientY - startY;
-                polaroid.style.left = `${initialLeft + dx}px`;
-                polaroid.style.top = `${initialTop + dy}px`;
-            });
-
-            document.addEventListener('mouseup', () => {
-                if (isDragging) {
-                    isDragging = false;
-                    polaroid.style.cursor = 'grab';
-                    polaroid.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1), z-index 0s';
-                    localStorage.setItem(`pos-${src}`, JSON.stringify({
-                        left: polaroid.style.left,
-                        top: polaroid.style.top,
-                        zIndex: parseInt(polaroid.style.zIndex),
-                        transform: polaroid.style.transform
-                    }));
+    // Load Firebase Images
+    db.collection("memories").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+            if (change.type === "added") {
+                const data = change.doc.data();
+                // Check if already displayed (avoid duplicates with local if any)
+                if (!document.querySelector(`[data-id="${change.doc.id}"]`)) {
+                    createPolaroid(data.imageUrl, change.doc.id, true);
                 }
-            });
-
-            // Loading
-            const isHeic = src.toLowerCase().endsWith('.heic') || src.toLowerCase().endsWith('.heif');
-            if (isHeic) {
-                fetch(src)
-                    .then(res => res.blob())
-                    .then(blob => heic2any({ blob, toType: "image/jpeg", quality: 0.7 }))
-                    .then(converted => {
-                        const url = URL.createObjectURL(Array.isArray(converted) ? converted[0] : converted);
-                        displayImage(polaroid, url);
-                    })
-                    .catch(() => displayImage(polaroid, 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=300&auto=format&fit=crop'));
-            } else {
-                displayImage(polaroid, src);
             }
+        });
+    });
 
-            const pFactor = 0.02 + (Math.random() * 0.05);
-            polaroid.dataset.parallax = pFactor;
+    // Upload Logic
+    const imageUpload = document.getElementById('imageUpload');
+    const uploadStatus = document.getElementById('uploadStatus');
+
+    if (imageUpload) {
+        imageUpload.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            uploadStatus.style.opacity = '1';
+            uploadStatus.innerText = '✨ Subiendo tu recuerdo...';
+
+            try {
+                const fileName = `${Date.now()}_${file.name}`;
+                const storageRef = storage.ref(`memories/${fileName}`);
+                const snapshot = await storageRef.put(file);
+                const downloadURL = await snapshot.ref.getDownloadURL();
+
+                await db.collection("memories").add({
+                    imageUrl: downloadURL,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    fileName: fileName
+                });
+
+                uploadStatus.innerText = '✅ Recuerdo guardado eternamente';
+                setTimeout(() => uploadStatus.style.opacity = '0', 3000);
+            } catch (error) {
+                console.error("Error uploading:", error);
+                uploadStatus.innerText = '❌ Error al subir, intenta de nuevo';
+                setTimeout(() => uploadStatus.style.opacity = '0', 3000);
+            }
         });
     }
 
