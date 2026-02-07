@@ -400,12 +400,12 @@ section {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -45%) scale(0.8) rotateX(-10deg);
+    transform: translate(-50%, -45%) scale(0.9) rotateX(-10deg);
     width: 98%;
-    max-width: 1500px;
+    max-width: 1600px;
     height: 98vh;
     background: #fff;
-    padding: 5px;
+    padding: 2px;
     color: var(--text);
     z-index: 2500;
     opacity: 0;
@@ -419,7 +419,7 @@ section {
 }
 
 .letter-pop.active {
-    transform: translate(-50%, -50%) scale(1) rotateX(0);
+    transform: translate(-50%, -50%) scale(1.02) rotateX(0);
     opacity: 1;
     pointer-events: all;
 }
