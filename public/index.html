@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Pinyon+Script&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=20260206_2247">
+    <link rel="stylesheet" href="style.css?v=20260207_0047">
 </head>
 
 <body>
@@ -131,13 +131,26 @@
         </div>
 
         <div class="secret-content" id="secretContent" style="display: none; width: 100%; text-align: center;">
+            <div class="magic-bg" id="magicBg"></div>
+
             <h2
-                style="font-family: var(--font-script); font-size: 6rem; color: var(--primary); margin-bottom: 3rem; text-shadow: 0 0 30px rgba(255, 77, 109, 0.5);">
+                style="font-family: var(--font-script); font-size: 6rem; color: var(--primary); margin-bottom: 2rem; text-shadow: 0 0 40px rgba(255, 77, 109, 0.6); position: relative; z-index: 2;">
                 Nuestra Eternidad</h2>
-            <p style="font-size: 1.5rem; line-height: 2; max-width: 750px; margin-inline: auto; opacity: 0.9;">
-                Porque hay promesas que no necesitan palabras, y sentimientos que solo nosotros comprendemos.
-                Este espacio es solo tuyo, Melissa.
-            </p>
+
+            <div class="reasons-container">
+                <div class="reason-card" id="reasonCard">
+                    <p class="reason-info-text">Un motivo para amarte cada día</p>
+                    <div class="reason-heart" id="generateReason">❤️</div>
+                    <p class="reason-text" id="reasonText">Toca el corazón para ver un secreto...</p>
+                </div>
+            </div>
+
+            <div class="reason-quote-wrapper">
+                <p class="reason-quote">
+                    "Porque hay promesas que no necesitan palabras, y sentimientos que solo nosotros comprendemos.
+                    Este espacio es solo tuyo, Melissa."
+                </p>
+            </div>
         </div>
     </section>
     <section id="recuerdos">

@@ -417,4 +417,75 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         pinInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') unlockBtn.click(); });
     }
+
+    // 9. Te Amo Porque (Razones Aleatorias con Estrellas Mágicas)
+    const reasons = [
+        "Por la forma en que me miras cuando crees que no me doy cuenta.",
+        "Porque haces que los días difíciles se sientan mucho más ligeros.",
+        "Por tu risa, que es mi sonido favorito en todo el mundo.",
+        "Porque crees en mí incluso cuando yo mismo dudo.",
+        "Por la paz que siento cuando estoy a tu lado.",
+        "Porque eres mi mejor amiga y mi gran amor al mismo tiempo.",
+        "Por cómo cuidas de los detalles más pequeños.",
+        "Porque sacas la mejor versión de mí cada día.",
+        "Por tu inteligencia y la forma en que ves el mundo.",
+        "Porque contigo el futuro no da miedo, da ilusión.",
+        "Por la forma en que encajas perfectamente en mis abrazos.",
+        "Porque me haces reír hasta que me duele la panza.",
+        "Por tu valentía y tu fuerza ante cualquier reto.",
+        "Porque compartes tus sueños conmigo.",
+        "Por los 'buenos días' que iluminan toda mi jornada.",
+        "Porque respetas mis silencios y celebras mis ruidos.",
+        "Por tu paciencia infinita (especialmente conmigo).",
+        "Porque cada momento a tu lado es un regalo.",
+        "Por cómo me haces sentir en casa, sin importar dónde estemos.",
+        "Porque eres la persona más hermosa, por dentro y por fuera.",
+        "Por tu ternura y la suavidad de tus caricias.",
+        "Porque me enseñas algo nuevo cada día.",
+        "Por el apoyo incondicional que siempre me brindas.",
+        "Porque simplemente eres tú, y no cambiaría nada de ti.",
+        "Porque mi vida es mucho más colorida desde que estás en ella."
+    ];
+
+    const generateBtn = document.getElementById('generateReason');
+    const reasonText = document.getElementById('reasonText');
+    const magicBg = document.getElementById('magicBg');
+
+    function createMagicStars() {
+        if (!magicBg) return;
+        magicBg.innerHTML = '';
+        for (let i = 0; i < 50; i++) {
+            const star = document.createElement('div');
+            star.className = 'magic-star';
+            const size = Math.random() * 4 + 2;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+            magicBg.appendChild(star);
+        }
+    }
+
+    if (generateBtn && reasonText) {
+        generateBtn.addEventListener('click', () => {
+            reasonText.classList.add('changing');
+            setTimeout(() => {
+                const randomIndex = Math.floor(Math.random() * reasons.length);
+                reasonText.innerText = reasons[randomIndex];
+                reasonText.classList.remove('changing');
+                for (let i = 0; i < 15; i++) createExplosionHeart();
+            }, 600);
+        });
+    }
+
+    // Llamar a las estrellas cuando se desbloquea
+    const observerSecret = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.attributeName === 'style' && secretContent.style.display === 'block') {
+                createMagicStars();
+            }
+        });
+    });
+    if (secretContent) observerSecret.observe(secretContent, { attributes: true });
 });
