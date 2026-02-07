@@ -206,6 +206,29 @@ document.addEventListener('DOMContentLoaded', () => {
             <div style="font-family: var(--font-script); color: #555; margin-top: 8px; font-size: 1rem; pointer-events:none; user-select:none; text-align:center;">Recuerdo...</div>
         `;
 
+        // Agregamos el botón de borrar (estilo en CSS)
+        const deleteBtn = document.createElement('div');
+        deleteBtn.className = 'delete-photo-btn';
+        deleteBtn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>';
+        deleteBtn.style.display = 'none'; // Se controla por JS el modo borrar
+        deleteBtn.onclick = async (e) => {
+            e.stopPropagation();
+            if (confirm('¿Borrar este recuerdo para siempre?')) {
+                try {
+                    if (id && !id.startsWith('local-')) {
+                        await db.collection("memories").doc(id).delete();
+                    }
+                    polaroid.style.transform = 'scale(0) rotate(20deg)';
+                    polaroid.style.opacity = '0';
+                    setTimeout(() => polaroid.remove(), 800);
+                } catch (err) {
+                    console.error("Error borrando:", err);
+                    alert("No se pudo borrar el recuerdo.");
+                }
+            }
+        };
+        polaroid.appendChild(deleteBtn);
+
         memoriesContainer.appendChild(polaroid);
 
         // Drag logic
@@ -240,6 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let startX, startY, initialLeft, initialTop;
 
         polaroid.addEventListener('mousedown', (e) => {
+            if (e.target.classList.contains('delete-photo-btn')) return;
             isDragging = true;
             topZ++;
             polaroid.style.zIndex = topZ;
@@ -247,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
             startX = e.clientX;
             startY = e.clientY;
             initialLeft = polaroid.offsetLeft;
-            initialTop = initialTop = polaroid.offsetTop;
+            initialTop = polaroid.offsetTop;
             polaroid.style.transition = 'none';
             e.preventDefault();
         });
@@ -278,14 +302,50 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load Initial Local Images
     localMemoryImages.forEach((src, idx) => createPolaroid(src, `local-${idx}`));
 
-    // Load Firebase Images
+    // Lógica Secreta: Triple Toque para modo borrar
+    const memoriesTitle = document.getElementById('memoriesTitle');
+    let titleClicks = 0;
+    let clickTimer;
+    let deleteModeActive = false;
+
+    if (memoriesTitle) {
+        memoriesTitle.addEventListener('click', () => {
+            titleClicks++;
+            clearTimeout(clickTimer);
+
+            if (titleClicks === 3) {
+                deleteModeActive = !deleteModeActive;
+                const btns = document.querySelectorAll('.delete-photo-btn');
+                btns.forEach(btn => btn.style.display = deleteModeActive ? 'flex' : 'none');
+
+                // Efecto visual en el título para saber que algo pasó
+                memoriesTitle.style.color = deleteModeActive ? 'var(--primary)' : '#fff';
+
+                titleClicks = 0;
+            } else {
+                clickTimer = setTimeout(() => { titleClicks = 0; }, 500);
+            }
+        });
+    }
+
+    // Asegurar que las nuevas fotos también respeten el modo borrar si está activo
     db.collection("memories").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
         snapshot.docChanges().forEach((change) => {
             if (change.type === "added") {
                 const data = change.doc.data();
-                // Check if already displayed (avoid duplicates with local if any)
                 if (!document.querySelector(`[data-id="${change.doc.id}"]`)) {
                     createPolaroid(data.imageUrl, change.doc.id, true);
+                    // Si el modo borrar está activo, mostrar el botón en la nueva foto
+                    if (deleteModeActive) {
+                        const newBtn = document.querySelector(`[data-id="${change.doc.id}"] .delete-photo-btn`);
+                        if (newBtn) newBtn.style.display = 'flex';
+                    }
+                }
+            } else if (change.type === "removed") {
+                const existing = document.querySelector(`[data-id="${change.doc.id}"]`);
+                if (existing) {
+                    existing.style.transform = 'scale(0)';
+                    setTimeout(() => existing.remove(), 500);
                 }
             }
         });
@@ -393,7 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const lockScreen = document.getElementById('lockScreen');
     const secretContent = document.getElementById('secretContent');
     const lockError = document.getElementById('lockError');
-    const code = "09282025";
+    const code = "092825";
 
     if (unlockBtn) {
         unlockBtn.addEventListener('click', () => {
@@ -444,7 +504,59 @@ document.addEventListener('DOMContentLoaded', () => {
         "Porque me enseñas algo nuevo cada día.",
         "Por el apoyo incondicional que siempre me brindas.",
         "Porque simplemente eres tú, y no cambiaría nada de ti.",
-        "Porque mi vida es mucho más colorida desde que estás en ella."
+        "Porque mi vida es mucho más colorida desde que estás en ella.",
+        "Por tu forma de morderte el labio cuando estás concentrada.",
+        "Porque conoces todos mis miedos y aun así decides quedarte.",
+        "Por la forma en que tus manos encajan perfectamente con las mías.",
+        "Porque eres la primera persona a la que quiero contarle todo.",
+        "Por tu olor, que es mi perfume favorito.",
+        "Porque haces que hasta ir al supermercado sea una aventura divertida.",
+        "Por los pequeños saltitos que das cuando estás emocionada.",
+        "Porque siempre sabes qué decir para hacerme sonreír.",
+        "Por la pasión que pones en todo lo que haces.",
+        "Porque eres mi refugio seguro en medio de cualquier tormenta.",
+        "Por la forma en que cantas en el coche, aunque no te sepas la letra.",
+        "Porque me escuchas aunque mis historias no tengan sentido.",
+        "Por tu honestidad, incluso cuando la verdad es difícil.",
+        "Porque me has enseñado lo que significa amar de verdad.",
+        "Por la forma en que buscas mis pies debajo de las sábanas para calentarte.",
+        "Porque eres la motivación que necesito para ser mejor hombre.",
+        "Por tus abrazos infinitos que me recargan la energía.",
+        "Por tienes el corazón más noble que jamás he conocido.",
+        "Por la manera en que me cuidas cuando estoy enfermo.",
+        "Porque me haces sentir que puedo conquistar el mundo a tu lado.",
+        "Por tus ojos, que brillan más que cualquier estrella.",
+        "Porque cada mensaje tuyo me saca una sonrisa boba.",
+        "Por la forma en que defiendes lo que crees que es justo.",
+        "Porque eres la única persona que me entiende sin decir una palabra.",
+        "Por tu sentido del humor, que encaja perfecto con el mío.",
+        "Porque me aceptas con todas mis imperfecciones.",
+        "Por los planes improvisados que terminan siendo los mejores.",
+        "Porque eres mi pensamiento favorito antes de dormir.",
+        "Por la ternura con la que hablas de tus sueños.",
+        "Porque eres el regalo más bonito que me ha dado la vida.",
+        "Por la forma en que arrugas la nariz cuando algo no te gusta.",
+        "Porque haces que el mundo sea un lugar mucho más bonito.",
+        "Por tu capacidad de perdonar y volver a empezar.",
+        "Porque eres mi confidente y mi cómplice en todo.",
+        "Por la luz que desprendes solo con entrar en una habitación.",
+        "Contigo el tiempo vuela, pero el amor se queda.",
+        "Por los besos robados que me quitan el aliento.",
+        "Porque eres el destino al que siempre quiero volver.",
+        "Por la fuerza con la que te enfrentas a tus miedos.",
+        "Porque me haces sentir especial cada día de mi vida.",
+        "Por la forma en que me apoyas en cada uno de mis proyectos.",
+        "Porque eres la razón por la que creo en el 'para siempre'.",
+        "Por tu curiosidad por aprender cosas nuevas constantemente.",
+        "Porque haces que hasta el silencio sea cómodo a tu lado.",
+        "Por la manera en que me miras cuando me dices 'te amo'.",
+        "Porque eres mi aventura favorita de todos los días.",
+        "Por el brillo de tu cara cuando estás realmente feliz.",
+        "Porque eres la pieza que le faltaba a mi rompecabezas.",
+        "Por tu perseverancia y por no rendirte nunca.",
+        "Porque simplemente no puedo imaginar un futuro donde no estés tú.",
+        "Por la forma en que proteges a quienes amas.",
+        "Porque eres mi persona favorita en todo el universo."
     ];
 
     const generateBtn = document.getElementById('generateReason');

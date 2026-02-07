@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Pinyon+Script&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=20260207_0047">
+    <link rel="stylesheet" href="style.css?v=20260207_1521">
 </head>
 
 <body>
@@ -30,7 +30,7 @@
     <!-- SECTION 1: HERO -->
     <section id="inicio" class="hero">
         <h1>Para Ti</h1>
-        <p>Cada latido lleva tu nombre Melissa</p>
+        <p>Cada latido lleva tu nombre Bey</p>
 
         <div class="heart-interaction" id="mainHeart">
             <svg viewBox="0 0 24 24">
@@ -121,9 +121,9 @@
             <h2 style="font-family: var(--font-script); font-size: 5rem; color: #fff; margin-bottom: 2rem;">Acceso al
                 Corazón</h2>
             <p style="margin-bottom: 2rem; opacity: 0.8; letter-spacing: 1px;">Introduce nuestra fecha especial para
-                desbloquear este secreto (DDMMYYYY)</p>
+                desbloquear este secreto (DDMMYY)</p>
             <div class="pin-input-container">
-                <input type="password" id="pinInput" maxlength="8" placeholder="........">
+                <input type="password" id="pinInput" maxlength="6" placeholder="......">
                 <button id="unlockBtn">Desbloquear</button>
             </div>
             <p id="lockError" style="color: var(--primary); margin-top: 1rem; opacity: 0; transition: 0.3s;">Fecha
@@ -148,14 +148,14 @@
             <div class="reason-quote-wrapper">
                 <p class="reason-quote">
                     "Porque hay promesas que no necesitan palabras, y sentimientos que solo nosotros comprendemos.
-                    Este espacio es solo tuyo, Melissa."
+                    Este espacio es solo tuyo."
                 </p>
             </div>
         </div>
     </section>
     <section id="recuerdos">
-        <h2
-            style="font-family: var(--font-script); font-size: 5.5rem; color: #fff; text-align: center; margin-bottom: 2rem; text-shadow: 0 0 30px var(--primary);">
+        <h2 id="memoriesTitle"
+            style="font-family: var(--font-script); font-size: 5.5rem; color: #fff; text-align: center; margin-bottom: 2rem; text-shadow: 0 0 30px var(--primary); cursor: pointer; user-select: none;">
             Nuestras Huellas</h2>
         <p style="text-align: center; opacity: 0.7; letter-spacing: 2px; margin-bottom: 2rem;">Momentos capturados
             que flotan en mi mente</p>
@@ -208,7 +208,7 @@
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    <script src="script.js?v=20260206_2340"></script>
+    <script src="script.js?v=20260207_1521"></script>
 </body>
 
 </html>
