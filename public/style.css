@@ -405,7 +405,7 @@ section {
     max-width: 750px;
     height: 75vh;
     background: #fff;
-    padding: 15px;
+    padding: 5px;
     color: var(--text);
     z-index: 2500;
     opacity: 0;
