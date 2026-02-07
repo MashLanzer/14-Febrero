@@ -414,8 +414,7 @@ section {
     transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
     overflow-y: auto;
     pointer-events: none;
-    background-image: radial-gradient(circle at 2px 2px, rgba(0, 0, 0, 0.05) 1px, transparent 0);
-    background-size: 30px 30px;
+    background-image: none;
 }
 
 .letter-pop.active {
