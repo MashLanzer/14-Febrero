@@ -400,10 +400,10 @@ section {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -45%) scale(0.9) rotateX(-5deg);
-    width: 85%;
-    max-width: 750px;
-    height: 75vh;
+    transform: translate(-50%, -50%) scale(1) rotateX(0deg);
+    width: 95%;
+    max-width: 1000px;
+    height: 95vh;
     background: transparent;
     padding: 0;
     color: var(--text);
@@ -418,7 +418,7 @@ section {
 }
 
 .letter-pop.active {
-    transform: translate(-50%, -50%) scale(1.02) rotateX(0);
+    transform: translate(-50%, -50%) scale(1) rotateX(0);
     opacity: 1;
     pointer-events: all;
 }
@@ -449,12 +449,13 @@ section {
 
 .letter-pop .close-letter {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 15px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+    font-size: 1.2rem;
     background: var(--primary);
     color: white;
-    width: 35px;
-    height: 35px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -682,9 +683,9 @@ section {
     }
 
     .letter-pop {
-        height: 90vh;
-        width: 98%;
-        padding: 2rem 1.5rem;
+        height: 98vh;
+        width: 100vw;
+        padding: 0;
     }
 }
 
