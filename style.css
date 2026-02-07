@@ -404,13 +404,13 @@ section {
     width: 85%;
     max-width: 750px;
     height: 75vh;
-    background: #fff;
-    padding: 5px;
+    background: transparent;
+    padding: 0;
     color: var(--text);
     z-index: 2500;
     opacity: 0;
-    border-radius: 20px;
-    box-shadow: 0 100px 150px rgba(0, 0, 0, 0.9);
+    border-radius: 0;
+    box-shadow: none;
     transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
     overflow-y: auto;
     pointer-events: none;
@@ -450,8 +450,8 @@ section {
 
 .letter-pop .close-letter {
     position: absolute;
-    top: -15px;
-    right: -15px;
+    top: 5px;
+    right: 5px;
     background: var(--primary);
     color: white;
     width: 35px;
