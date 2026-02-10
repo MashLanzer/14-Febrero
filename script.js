@@ -1,4 +1,29 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // 0. Load Timeline Images (Handling HEIF/HEIC)
+    function loadTimelineImages() {
+        document.querySelectorAll('.milestone-img').forEach(imgContainer => {
+            const src = imgContainer.dataset.src;
+            if (!src) return;
+
+            const isHeic = src.toLowerCase().endsWith('.heic') || src.toLowerCase().endsWith('.heif');
+            if (isHeic) {
+                fetch(src)
+                    .then(res => res.blob())
+                    .then(blob => heic2any({ blob, toType: "image/jpeg", quality: 0.7 }))
+                    .then(converted => {
+                        const url = URL.createObjectURL(Array.isArray(converted) ? converted[0] : converted);
+                        imgContainer.style.backgroundImage = `url('${url}')`;
+                    })
+                    .catch(e => {
+                        console.error("Error converting timeline HEIC:", e);
+                        imgContainer.style.background = '#333';
+                    });
+            } else {
+                imgContainer.style.backgroundImage = `url('${src}')`;
+            }
+        });
+    }
+    loadTimelineImages();
     // 1. Particles
     particlesJS('particles-js', {
         "particles": {
