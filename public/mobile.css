@@ -5,7 +5,7 @@
 
     /* 1. Reset & General */
     section {
-        padding: 3rem 1rem;
+        padding: 2rem 1rem;
         min-height: auto;
     }
 
@@ -32,14 +32,10 @@
     }
 
     .nav-links a {
-        font-size: 0.6rem;
-        letter-spacing: 0.5px;
+        font-size: 0.55rem;
+        letter-spacing: 0.3px;
         white-space: nowrap;
-        background: rgba(255, 255, 255, 0.05);
-        padding: 6px 12px;
-        border-radius: 50px;
-        border: 1px solid rgba(255, 77, 109, 0.2);
-        transition: all 0.3s ease;
+        padding: 5px 10px;
     }
 
     .nav-links a:active,
@@ -52,15 +48,13 @@
 
     /* 3. Hero Section */
     .hero h1 {
-        font-size: 3.5rem !important;
-        /* Force reduction for giant title */
-        margin-bottom: 1rem;
-        text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+        font-size: 2.8rem !important;
+        margin-bottom: 0.8rem;
     }
 
     .hero p {
-        font-size: 0.8rem !important;
-        letter-spacing: 1px;
+        font-size: 0.7rem !important;
+        letter-spacing: 0.5px;
     }
 
     /* 4. Timeline (Tiempos de Amor) */
@@ -74,47 +68,31 @@
     }
 
     .milestone-item {
-        padding-left: 35px !important;
-        padding-right: 0 !important;
-        justify-content: flex-start !important;
-        margin-bottom: 3rem;
-        transform: none !important;
-        opacity: 1 !important;
-    }
-
-    .milestone-item:nth-child(even) {
-        padding-left: 35px !important;
-        transform: none !important;
+        padding-left: 30px !important;
+        margin-bottom: 2rem;
     }
 
     .milestone-item::before {
-        left: 20px !important;
-        top: 25px !important;
-        width: 12px !important;
-        height: 12px !important;
+        left: 15px !important;
+        top: 20px !important;
+        width: 10px !important;
+        height: 10px !important;
     }
 
     .milestone-card {
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 1.2rem !important;
-        border-radius: 20px !important;
+        padding: 1rem !important;
     }
 
     .milestone-card h3 {
-        font-size: 1.2rem !important;
-        margin-bottom: 0.5rem !important;
+        font-size: 1rem !important;
     }
 
     .milestone-card p {
-        font-size: 0.9rem !important;
-        line-height: 1.6 !important;
+        font-size: 0.8rem !important;
     }
 
     .milestone-img {
-        height: 140px !important;
-        border-radius: 12px !important;
-        margin-bottom: 1rem !important;
+        height: 120px !important;
     }
 
     /* 5. Memories (Scattered Polaroids) */
@@ -129,22 +107,16 @@
     }
 
     .polaroid {
-        position: relative !important;
-        left: 0 !important;
-        top: 0 !important;
-        transform: rotate(0deg) !important;
-        width: 120px !important;
-        margin: 5px;
+        width: 100px !important;
     }
 
     .polaroid img,
     .photo-loader {
-        height: 120px !important;
+        height: 100px !important;
     }
 
     .polaroid div[style*="font-family: var(--font-script)"] {
-        font-size: 0.8rem !important;
-        margin-top: 5px !important;
+        font-size: 0.7rem !important;
     }
 
     /* 6. Secrets Section (Nuestra Eternidad) */
@@ -185,38 +157,30 @@
     }
 
     .envelope {
-        width: 300px !important;
-        height: 200px !important;
+        width: 260px !important;
+        height: 170px !important;
     }
 
     .envelope::before {
-        border-top-width: 100px !important;
-        border-left-width: 150px !important;
-        border-right-width: 150px !important;
+        border-top-width: 85px !important;
+        border-left-width: 130px !important;
+        border-right-width: 130px !important;
     }
 
     .letter-mini {
-        width: 240px !important;
-        height: 160px !important;
+        width: 200px !important;
+        height: 140px !important;
     }
 
     .envelope.open .letter-mini {
-        transform: translate(-50%, -100px) !important;
-    }
-
-    .letter-pop {
-        width: 92% !important;
-        padding: 1.2rem 1rem !important;
-        max-height: 85vh !important;
+        transform: translate(-50%, -80px) !important;
     }
 
     .letter-pop h2 {
-        font-size: 2.2rem !important;
-        margin-bottom: 1rem !important;
+        font-size: 1.8rem !important;
     }
 
     .letter-pop p {
-        font-size: 0.95rem !important;
-        line-height: 1.5 !important;
+        font-size: 0.85rem !important;
     }
 }
