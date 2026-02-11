@@ -1,0 +1,181 @@
+/* --- MOBILE EXCLUSIVE STYLES --- */
+/* This file is loaded after style.css and handles all mobile optimizations */
+
+@media (max-width: 768px) {
+
+    /* 1. Reset & General */
+    section {
+        padding: 4rem 1rem;
+        min-height: auto;
+    }
+
+    /* 2. Navigation */
+    nav {
+        padding: 1rem;
+    }
+
+    .nav-links {
+        gap: 1.5rem;
+    }
+
+    .nav-links a {
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+    }
+
+    /* 3. Hero Section */
+    .hero h1 {
+        font-size: 4.5rem !important;
+        /* Force reduction for giant title */
+        margin-bottom: 1.5rem;
+        text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+    }
+
+    .hero p {
+        font-size: 0.9rem !important;
+        letter-spacing: 2px;
+    }
+
+    /* 4. Timeline (Tiempos de Amor) */
+    .timeline-container {
+        padding: 2rem 0;
+    }
+
+    .timeline-line {
+        left: 20px;
+        transform: none;
+    }
+
+    .milestone-item {
+        padding-left: 45px !important;
+        padding-right: 0 !important;
+        justify-content: flex-start !important;
+        margin-bottom: 4rem;
+        transform: none !important;
+        opacity: 1 !important;
+        /* Ensure visibility for testing */
+    }
+
+    .milestone-item:nth-child(even) {
+        padding-left: 45px !important;
+        transform: none !important;
+    }
+
+    .milestone-item::before {
+        left: 20px !important;
+        top: 30px !important;
+    }
+
+    .milestone-card {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 1.5rem !important;
+        border-radius: 25px !important;
+    }
+
+    .milestone-card h3 {
+        font-size: 1.5rem !important;
+    }
+
+    .milestone-img {
+        height: 160px !important;
+        border-radius: 15px !important;
+    }
+
+    /* 5. Memories (Scattered Polaroids) */
+    .memories-scatter-container {
+        height: auto !important;
+        min-height: 100vh;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        padding-bottom: 100px;
+    }
+
+    .polaroid {
+        position: relative !important;
+        left: 0 !important;
+        top: 0 !important;
+        transform: rotate(0deg) !important;
+        width: 140px !important;
+        margin: 10px;
+    }
+
+    .polaroid img,
+    .photo-loader {
+        height: 150px !important;
+    }
+
+    /* 6. Secrets Section (Nuestra Eternidad) */
+    .lock-card {
+        width: 95% !important;
+        padding: 2rem 1rem !important;
+    }
+
+    #pinInput {
+        width: 100% !important;
+        font-size: 1.5rem !important;
+    }
+
+    /* 7. Music Player (Centered) */
+    .music-player {
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: 90% !important;
+        max-width: 320px !important;
+        bottom: 15px !important;
+        padding: 10px 15px !important;
+        gap: 10px !important;
+    }
+
+    .vinyl-wrapper {
+        width: 45px !important;
+        height: 45px !important;
+    }
+
+    .song-title {
+        font-size: 0.8rem !important;
+    }
+
+    /* 8. Envelope & Letter (Responsive) */
+    .envelope-wrapper {
+        max-width: 100% !important;
+        height: 300px !important;
+    }
+
+    .envelope {
+        width: 300px !important;
+        height: 200px !important;
+    }
+
+    .envelope::before {
+        border-top-width: 100px !important;
+        border-left-width: 150px !important;
+        border-right-width: 150px !important;
+    }
+
+    .letter-mini {
+        width: 260px !important;
+        height: 180px !important;
+    }
+
+    .envelope.open .letter-mini {
+        transform: translate(-50%, -120px) !important;
+    }
+
+    .letter-pop {
+        width: 95% !important;
+        padding: 1.5rem 1rem !important;
+        max-height: 80vh !important;
+    }
+
+    .letter-pop h2 {
+        font-size: 2.8rem !important;
+    }
+
+    .letter-pop p {
+        font-size: 1.1rem !important;
+        line-height: 1.6 !important;
+    }
+}
