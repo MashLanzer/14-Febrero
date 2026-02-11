@@ -81,6 +81,9 @@
         /* Center the line */
         transform: translateX(-50%);
         width: 2px;
+        z-index: 0 !important;
+        /* Move behind cards */
+        opacity: 0.5;
     }
 
     .milestone-item {
@@ -157,11 +160,29 @@
         height: 160px !important;
     }
 
-    /* 6. Secrets Section (Symmetrical) */
+    /* 6. Secrets Section (Symmetrical & Stacked) */
     .lock-card {
         width: 95% !important;
         margin: 0 auto;
-        padding: 2.5rem 1.5rem !important;
+        padding: 2rem 1.2rem !important;
+    }
+
+    .pin-container {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 1.5rem !important;
+        width: 100% !important;
+    }
+
+    #pinInput {
+        width: 100% !important;
+        max-width: 250px !important;
+        text-align: center !important;
+    }
+
+    .unlock-btn {
+        width: 100% !important;
+        max-width: 250px !important;
     }
 
     /* 7. Music Player (Floating Center) */
@@ -175,24 +196,47 @@
 
     /* 8. Letter (Full Balance) */
     .envelope-wrapper {
-        height: 350px !important;
+        height: 320px !important;
         display: flex;
         justify-content: center;
         align-items: center;
+        perspective: 800px;
     }
 
     .envelope {
-        width: 320px !important;
-        height: 220px !important;
+        width: 280px !important;
+        height: 180px !important;
         margin: 0 auto;
     }
 
+    .envelope::before {
+        border-top-width: 90px !important;
+        border-left-width: 140px !important;
+        border-right-width: 140px !important;
+    }
+
+    .letter-mini {
+        width: 250px !important;
+        height: 160px !important;
+    }
+
+    .envelope.open .letter-mini {
+        transform: translate(-50%, -100px) !important;
+    }
+
     .letter-pop {
-        width: 92% !important;
-        padding: 2rem 1.5rem !important;
+        width: 95% !important;
+        padding: 1.5rem 1rem !important;
+        max-height: 85vh !important;
+        overflow-y: auto;
     }
 
     .letter-pop h2 {
-        font-size: 3rem !important;
+        font-size: 2.5rem !important;
+    }
+
+    .letter-pop p {
+        font-size: 0.95rem !important;
+        line-height: 1.7 !important;
     }
 }
