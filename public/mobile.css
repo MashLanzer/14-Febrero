@@ -134,15 +134,16 @@
         margin: 0 auto 1.5rem auto !important;
     }
 
-    /* 5. Memories (Balanced Grid) */
+    /* 5. Memories (Symmetrical 2x2 Grid) */
     .memories-scatter-container {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        justify-content: center !important;
-        gap: 25px !important;
-        padding: 20px 10px 120px 10px !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+        padding: 20px 15px 120px 15px !important;
         height: auto !important;
-        width: 100%;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .polaroid {
@@ -150,14 +151,22 @@
         left: auto !important;
         top: auto !important;
         margin: 0 !important;
-        width: 155px !important;
-        /* Balanced size for 2-column feel on many phones */
+        width: 100% !important;
         transform: none !important;
+        padding: 10px 10px 25px 10px !important;
+        /* Smaller padding for grid */
     }
 
     .polaroid img,
     .photo-loader {
-        height: 160px !important;
+        height: 140px !important;
+        width: 100% !important;
+        object-fit: cover !important;
+    }
+
+    .polaroid div[style*="font-family"] {
+        font-size: 0.75rem !important;
+        margin-top: 5px !important;
     }
 
     /* 6. Secrets Section (Symmetrical & Stacked) */
